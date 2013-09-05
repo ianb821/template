@@ -1,5 +1,5 @@
 /*********************************************************
-* template builds template .cpp, .h and .java files (will support
+* template builds template .cpp, .c, .h and .java files (will support
 * more file types in the future) based on a file name and 
 * #include, import lines provided at the command line.  The
 * file is opened after creation.
@@ -14,6 +14,18 @@
 *     #include <string>
 *
 *     using namespace std;
+*
+*     int main(int argc, char * argv[])
+*     {
+*
+*        return 0;
+*     }
+*
+* .c Example:
+*     template something.c stdio.h
+* Output:
+*
+*     #include <stdio.h>
 *
 *     int main(int argc, char * argv[])
 *     {
@@ -74,7 +86,7 @@ string getFileType(string & filename);
 void addImportAndIncludeLines(vector<string> & linesOfFile,
                               string & fileType, char * dependency);
 void buildFile(vector<string> & linesOfFile, string & fileType);
-void buildCPlusPlusFile(vector<string> & linesOfFile);
+void buildCOrCPlusPlusFile(vector<string> & linesOfFile, string & fileType);
 void buildHeaderFile(vector<string> & linesOfFile, string & filename);
 void buildJavaFile(vector<string> & linesOfFile, string & filename);
 void writeToFile(vector<string> & linesOfFile, string & filename) throw(string);
@@ -192,7 +204,7 @@ void addImportAndIncludeLines(vector<string> & linesOfFile, string & fileType, c
    
    // decide whether to #include or import.java.. based on
    // file extension
-   if (strcmp(fileType.c_str(), "cpp") == 0 || strcmp(fileType.c_str(), "h") == 0)
+   if (strcmp(fileType.c_str(), "cpp") == 0 || strcmp(fileType.c_str(), "h") == 0 || strcmp(fileType.c_str(), "c") == 0)
    {
          string includeString = "#include <";
          includeString += dependency;
@@ -214,16 +226,16 @@ void addImportAndIncludeLines(vector<string> & linesOfFile, string & fileType, c
 *********************************************************/
 void buildFile(vector<string> & linesOfFile, string & filename)
 {
-   
-   // calls the proper template builder based on file extension
-   string fileType = getFileType(filename);
-   if (strcmp(fileType.c_str(), "cpp") == 0)
-      buildCPlusPlusFile(linesOfFile);
-   else if (strcmp(fileType.c_str(), "h") == 0)
-      buildHeaderFile(linesOfFile, filename);
-   else if (strcmp(fileType.c_str(), "java") == 0)
-      buildJavaFile(linesOfFile, filename);
-   
+    
+    // calls the proper template builder based on file extension
+    string fileType = getFileType(filename);
+    if (strcmp(fileType.c_str(), "cpp") == 0 || strcmp(fileType.c_str(), "c") == 0)
+        buildCOrCPlusPlusFile(linesOfFile, fileType);
+    else if (strcmp(fileType.c_str(), "h") == 0)
+        buildHeaderFile(linesOfFile, filename);
+    else if (strcmp(fileType.c_str(), "java") == 0)
+        buildJavaFile(linesOfFile, filename);
+    
 }
 
 
@@ -231,12 +243,14 @@ void buildFile(vector<string> & linesOfFile, string & filename)
 * buildCPlusPlusFile - builds the template .cpp file plus
 * the #include lines added at the command line
 *********************************************************/
-void buildCPlusPlusFile(vector<string> & linesOfFile)
+void buildCOrCPlusPlusFile(vector<string> & linesOfFile, string & fileType)
 {
-   linesOfFile.push_back("\nusing namespace std;");
-   linesOfFile.push_back("\nint main(int argc, char * argv[])\n{\n");
-   linesOfFile.push_back("\treturn 0;\n}");
-   
+    if (strcmp(fileType.c_str(), "cpp") == 0) {
+        linesOfFile.push_back("\nusing namespace std;");
+    }
+    linesOfFile.push_back("\nint main(int argc, char * argv[])\n{\n");
+    linesOfFile.push_back("\treturn 0;\n}");
+    
 }
 
 

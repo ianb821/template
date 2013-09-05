@@ -1,6 +1,6 @@
 #Template
 
-In school, I found that I would need to create .cpp, .h and .java files really often, so I decided to build a template file creator to simplifiy the process for me.  Template builds template .cpp, .h and .java files (will support more file types in the future) based on a file name and #include, import lines provided at the command line.  The file is opened after creation.
+In school, I found that I would need to create .cpp, .h and .java files really often, so I decided to build a template file creator to simplifiy the process for me.  Template builds template .cpp, .h and .java files (will support more file types in the future) based on a file name and #include/import lines provided at the command line.  If the file type is not one of the supported file types, a new file with the name specified is created.  The file is opened after creation.
 
 
 #Examples:
