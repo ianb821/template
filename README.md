@@ -1,6 +1,8 @@
 #Template
 
-In school, I found that I would need to create .cpp, .h and .java files really often, so I decided to build a template file creator to simplifiy the process for me.  Template builds template .cpp, .h and .java files (will support more file types in the future) based on a file name and #include/import lines provided at the command line.  If the file type is not one of the supported file types, a new file with the name specified is created.  The file is opened after creation.
+In school, I found that I would need to create .cpp, .h and .java files really often, so I decided to build a template file creator to simplifiy the process for me.  
+
+Template builds template .cpp, .c, .h and .java files (will support more file types in the future) based on a file name and #include/import lines provided at the command line.  If the file type is not one of the supported file types, a new file with the name specified is created.  The file is opened after creation.
 
 
 #Examples:
@@ -15,6 +17,19 @@ In school, I found that I would need to create .cpp, .h and .java files really o
      #include <string>
 
      using namespace std;
+
+     int main(int argc, char * argv[])
+     {
+
+        return 0;
+     }
+     
+ .c Example:
+ 
+     template something.c stdio.h
+ Output:
+
+     #include <stdio.h>
 
      int main(int argc, char * argv[])
      {
