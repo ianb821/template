@@ -204,21 +204,27 @@ void addImportAndIncludeLines(vector<string> & linesOfFile, string & fileType, c
    
    // decide whether to #include or import.java.. based on
    // file extension
-   if (strcmp(fileType.c_str(), "cpp") == 0 || strcmp(fileType.c_str(), "h") == 0 || strcmp(fileType.c_str(), "c") == 0)
-   {
-         string includeString = "#include <";
-         includeString += dependency;
-         includeString += ">";
-         linesOfFile.push_back(includeString);
-   }
-   else if (strcmp(fileType.c_str(), "java") == 0)
-   {
-         string importString = "import java.";
-         importString += dependency;
-         importString += ";";
-         linesOfFile.push_back(importString);
-      
-   }
+    switch (fileType.at(fileType.size() - 1)) {
+        case 'c':
+        case 'h':
+        case 'p':
+        {
+            string includeString = "#include <";
+            includeString += dependency;
+            includeString += ">";
+            linesOfFile.push_back(includeString);
+            break;
+        }
+        case 'a':
+        {
+            string importString = "import java.";
+            importString += dependency;
+            importString += ";";
+            linesOfFile.push_back(importString);
+            break;
+        }
+            
+    }
 }
 
 /*********************************************************
@@ -229,13 +235,19 @@ void buildFile(vector<string> & linesOfFile, string & filename)
     
     // calls the proper template builder based on file extension
     string fileType = getFileType(filename);
-    if (strcmp(fileType.c_str(), "cpp") == 0 || strcmp(fileType.c_str(), "c") == 0)
-        buildCOrCPlusPlusFile(linesOfFile, fileType);
-    else if (strcmp(fileType.c_str(), "h") == 0)
-        buildHeaderFile(linesOfFile, filename);
-    else if (strcmp(fileType.c_str(), "java") == 0)
-        buildJavaFile(linesOfFile, filename);
     
+    switch (fileType.at(fileType.size() - 1)) {
+        case 'p':
+        case 'c':
+            buildCOrCPlusPlusFile(linesOfFile, fileType);
+            break;
+        case 'h':
+            buildHeaderFile(linesOfFile, filename);
+            break;
+        case 'a':
+            buildJavaFile(linesOfFile, filename);
+            
+    }
 }
 
 
